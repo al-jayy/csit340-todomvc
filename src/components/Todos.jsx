@@ -1,8 +1,17 @@
 import { useState } from 'react'
 
 function Todos() {
+    const selectedClass =
+        'cursor-pointer rounded-[3px] border border-[#b83f45]/20 px-[7px] py-[3px]'
+    const unselectedClass =
+        'cursor-pointer rounded-[3px] border border-transparent px-[7px] py-[3px] hover:border-[#b83f45]/10'
     const [text, setText] = useState('')
     const [todos, setTodos] = useState([])
+    const [filter, setFilter] = useState('all')
+
+    const activeCount = todos.filter((todo) => !todo.completed).length
+    const hasCompleted = todos.some((todo) => todo.completed)
+    const allCompleted = todos.every((todo) => todo.completed)
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -26,6 +35,12 @@ function Todos() {
     function handleDelete(id) {
         setTodos(todos.filter((todo) => todo.id !== id))
     }
+
+    const visibleTodos = todos.filter((todo) => {
+        if (filter === 'active') return !todo.completed
+        if (filter === 'completed') return todo.completed
+        return true
+    })
 
   return (
     <section className="mx-auto max-w-[550px]">
@@ -89,7 +104,8 @@ function Todos() {
 
                     <footer className="grid h-10 grid-cols-3 items-center border-t border-[#e6e6e6] px-[15px] text-[15px]">
                         <span>
-                            <strong className="font-light">1</strong> item left
+                            <strong className="font-light">{activeCount}</strong>{' '}
+                            {activeCount === 1 ? 'item' : 'items'} left
                         </span>
                         <ul className="flex justify-center gap-1">
                             <li>
