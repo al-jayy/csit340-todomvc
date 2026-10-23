@@ -46,6 +46,9 @@ function Todos() {
         setTodos(todos.filter((todo) => !todo.completed))
     }
 
+    function handleToggleAll() {
+        setTodos(todos.map((todo) => ({ ...todo, completed: !allCompleted })))
+    }
 
   return (
     <section className="mx-auto max-w-[550px]">
@@ -66,7 +69,13 @@ function Todos() {
             {todos.length > 0 && (
                 <>
                     <main className="relative border-t border-[#e6e6e6]">
-                        <input id="toggle-all" type="checkbox" className="peer sr-only" />
+                        <input
+                            id="toggle-all"
+                            type="checkbox"
+                            className="peer sr-only"
+                            checked={allCompleted}
+                            onChange={handleToggleAll}
+                        />
                         <label
                             htmlFor="toggle-all"
                             className="absolute -top-[66px] left-0 flex h-[65px] w-[60px] cursor-pointer items-center justify-center text-[22px] text-[#949494] peer-checked:text-[#484848]"
