@@ -13,6 +13,12 @@ function Todos() {
     const hasCompleted = todos.some((todo) => todo.completed)
     const allCompleted = todos.every((todo) => todo.completed)
 
+    const visibleTodos = todos.filter((todo) => {
+        if (filter === 'active') return !todo.completed
+        if (filter === 'completed') return todo.completed
+        return true
+    })
+
     function handleSubmit(e) {
         e.preventDefault()
         const trimmed = text.trim()
@@ -36,11 +42,10 @@ function Todos() {
         setTodos(todos.filter((todo) => todo.id !== id))
     }
 
-    const visibleTodos = todos.filter((todo) => {
-        if (filter === 'active') return !todo.completed
-        if (filter === 'completed') return todo.completed
-        return true
-    })
+    function handleClearCompleted() {
+        setTodos(todos.filter((todo) => !todo.completed))
+    }
+
 
   return (
     <section className="mx-auto max-w-[550px]">
@@ -133,9 +138,15 @@ function Todos() {
                                 </button>
                             </li>
                         </ul>
-                        <button type="button" className="cursor-pointer justify-self-end hover:underline">
-                            Clear completed
-                        </button>
+                        {hasCompleted && (
+                            <button
+                                type="button"
+                                onClick={handleClearCompleted}
+                                className="cursor-pointer justify-self-end hover:underline"
+                            >
+                                Clear completed
+                            </button>
+                        )}
                     </footer>
                 </>
             )}
